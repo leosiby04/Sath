@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import dotenv from 'dotenv';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { generateCrisisResponse, generateCaregiverGuidance, generateRecoveryPlan } from './services/geminiClient.js';
 
 dotenv.config();
@@ -9,6 +9,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 

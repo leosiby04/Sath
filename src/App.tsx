@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { Home } from './pages/Home';
-import { Session } from './pages/Session';
-import { Emergency } from './pages/Emergency';
-import { Caregiver } from './pages/Caregiver';
-import { Memory } from './pages/Memory';
+import React, { useState, Suspense, lazy } from 'react';
 import { LanguageSelector } from './components/LanguageSelector';
 import { LanguageProvider } from './context/LanguageContext';
 import { SessionProvider } from './context/SessionContext';
+
+const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
+const Session = lazy(() => import('./pages/Session').then(m => ({ default: m.Session })));
+const Emergency = lazy(() => import('./pages/Emergency').then(m => ({ default: m.Emergency })));
+const Caregiver = lazy(() => import('./pages/Caregiver').then(m => ({ default: m.Caregiver })));
+const Memory = lazy(() => import('./pages/Memory').then(m => ({ default: m.Memory })));
 
 type Route = 'home' | 'session' | 'emergency' | 'caregiver' | 'memory';
 
@@ -17,28 +18,30 @@ const AppContent = () => {
     <>
       {route !== 'emergency' && route !== 'session' && <LanguageSelector />}
       
-      {route === 'home' && (
-        <Home onNavigate={setRoute} />
-      )}
-      
-      {route === 'session' && (
-        <Session 
-          onEmergency={() => setRoute('emergency')} 
-          onBack={() => setRoute('home')} 
-        />
-      )}
-      
-      {route === 'emergency' && (
-        <Emergency onBack={() => setRoute('session')} />
-      )}
-      
-      {route === 'caregiver' && (
-        <Caregiver onBack={() => setRoute('home')} />
-      )}
-      
-      {route === 'memory' && (
-        <Memory onBack={() => setRoute('home')} />
-      )}
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500">Loading...</div>}>
+        {route === 'home' && (
+          <Home onNavigate={setRoute} />
+        )}
+        
+        {route === 'session' && (
+          <Session 
+            onEmergency={() => setRoute('emergency')} 
+            onBack={() => setRoute('home')} 
+          />
+        )}
+        
+        {route === 'emergency' && (
+          <Emergency onBack={() => setRoute('session')} />
+        )}
+        
+        {route === 'caregiver' && (
+          <Caregiver onBack={() => setRoute('home')} />
+        )}
+        
+        {route === 'memory' && (
+          <Memory onBack={() => setRoute('home')} />
+        )}
+      </Suspense>
     </>
   );
 };

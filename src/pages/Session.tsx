@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useSession } from '../context/SessionContext';
 import { useSpeech } from '../hooks/useSpeech';
 import { t } from '../utils/i18n';
-import { detectRiskLevel, RiskLevel } from '../services/riskDetection';
+import { detectRiskLevel } from '../services/riskDetection';
 import { sendCrisisMessage } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -78,7 +78,7 @@ export const Session: React.FC<{
     >
       <header className="bg-white/80 backdrop-blur-md shadow-sm px-4 py-4 flex items-center z-10 sticky top-0">
         <button onClick={onBack} className="text-slate-500 hover:text-blue-600 transition-colors p-2 rounded-full hover:bg-slate-100" aria-label="Go back">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         </button>
         <h1 className="ml-4 text-xl font-bold text-slate-800">Support Session</h1>
       </header>
@@ -134,7 +134,7 @@ export const Session: React.FC<{
               className={`p-4 rounded-full flex-shrink-0 transition-all focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 focus:outline-none shadow-sm ${isListening ? 'bg-red-500 text-white animate-pulse shadow-red-500/30' : 'bg-white text-slate-600 hover:bg-blue-50 hover:text-blue-600 border border-slate-200'}`}
               aria-label={isListening ? t('session.listening', language) : t('session.speak', language)}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+              <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
             </motion.button>
           )}
           <input
@@ -153,7 +153,7 @@ export const Session: React.FC<{
             className="p-4 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed transition-all focus:ring-4 focus:ring-blue-300 focus:outline-none"
             aria-label={t('session.send', language)}
           >
-            <svg className="w-6 h-6 transform rotate-90 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            <svg aria-hidden="true" className="w-6 h-6 transform rotate-90 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
           </motion.button>
         </div>
       </div>

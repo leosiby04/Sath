@@ -13,7 +13,7 @@ describe('Emergency Page', () => {
       </LanguageProvider>
     );
 
-    const callLink = screen.getByRole('link', { name: /Call Emergency Hotline/i });
+    const callLink = screen.getByRole('link', { name: /CALL/i });
     expect(callLink).toBeInTheDocument();
     expect(callLink).toHaveAttribute('href', 'tel:911');
 
