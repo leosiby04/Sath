@@ -26,12 +26,13 @@ export async function sendCrisisMessage(
 
 export async function sendCaregiverSummary(
   summary: string,
-  language: SupportedLanguage
+  language: SupportedLanguage,
+  imageBase64?: string
 ): Promise<{ guidance: string, script: string, nextAction: string }> {
   const response = await fetch(`${API_URL}/gemini/caregiver`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ summary, language })
+    body: JSON.stringify({ summary, language, imageBase64 })
   });
 
   if (!response.ok) {

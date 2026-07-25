@@ -46,11 +46,12 @@ Rules:
 
 export async function generateCaregiverGuidance(
   summary: string,
-  language: string
+  language: string,
+  imageBase64?: string
 ): Promise<{ guidance: string, script: string, nextAction: string }> {
   if (MOCK_MODE) {
     return {
-      guidance: `[Demo Mode] Stay calm and listen actively. This is guidance in ${language}.`,
+      guidance: `[Demo Mode] Stay calm and listen actively. This is guidance in ${language}. ${imageBase64 ? '(Image Received)' : ''}`,
       script: `[Demo Mode] "I am here for you and I want to help."`,
       nextAction: `[Demo Mode] Monitor the situation and contact professional help if it worsens.`
     };
@@ -61,13 +62,30 @@ export async function generateCaregiverGuidance(
   const systemPrompt = `You are a supportive AI advising a caregiver of someone navigating Substance Use Disorders.
 Your language is ${language}.
 You must take the structured summary and return a JSON object with:
-- "guidance": Calming conversation suggestions.
+- "guidance": Calming conversation suggestions (take into account any image provided, e.g. pill bottles or environments).
 - "script": A short emergency communication script.
 - "nextAction": A next-best-action recommendation (explicitly state when to seek professional help).
 
 Summary: ${summary}`;
 
-  const result = await model.generateContent(systemPrompt);
+  let result;
+  if (imageBase64) {
+    // Extract base64 data and mime type if it's a data URL
+    const mimeTypeMatch = imageBase64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    const mimeType = mimeTypeMatch ? mimeTypeMatch[1] : 'image/jpeg';
+    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+
+    const imagePart = {
+      inlineData: {
+        data: base64Data,
+        mimeType: mimeType
+      }
+    };
+    result = await model.generateContent([systemPrompt, imagePart]);
+  } else {
+    result = await model.generateContent(systemPrompt);
+  }
+
   const text = result.response.text();
   
   try {

@@ -65,8 +65,8 @@ app.post('/api/gemini/crisis', sanitizeInput, async (req, res) => {
 
 app.post('/api/gemini/caregiver', sanitizeInput, async (req, res) => {
   try {
-    const { summary, language } = req.body;
-    const response = await generateCaregiverGuidance(summary, language);
+    const { summary, language, imageBase64 } = req.body;
+    const response = await generateCaregiverGuidance(summary, language, imageBase64);
     res.json(response);
   } catch (error) {
     console.error('Gemini API Error:', error);
